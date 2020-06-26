@@ -34,7 +34,7 @@ def run_method(obs, input, start_year, config, decay, fitting_method) -> np.ndar
 
 
 def run(input: np.ndarray, obs: np.ndarray, start_year: int, config: ConfigModel, decay: float,
-        fitting_method: Callable) -> FittingResult:
+        fitting_method: Callable, calculate_params_accuracy: bool) -> FittingResult:
     """
     Run whole simulation and get all fitting data, calculate parameters accuracy
 
@@ -45,14 +45,24 @@ def run(input: np.ndarray, obs: np.ndarray, start_year: int, config: ConfigModel
     :param config: configuration
     :param decay: decay constant
     :param fitting_method: fitting method (different type for PFM)
+    :param calculate_params_accuracy: True if accuracy of params should be included, False otherwise
     :return: Fit Data which includes observations, model type, calculated parameters, beta value and final output
 
     """
     base_fitter = fitting_method(input, obs, start_year, config, decay)
 
     solution = base_fitter.run_algorithm()
-    params_accuracy = get_params_accuracy(input, obs, start_year, config, decay, fitting_method)
+    params = solution.x
 
-    results = base_fitter.get_data_solution(solution, params_accuracy)
+    if calculate_params_accuracy:
+        if params.size == 2:
+            params_range = tuple([(i - 0.1 * i, i + 0.1 * i) for i in params])
+        else:
+            params_range = ((params[0] - 0.1 * params[0], params[0] + 0.1 * params[0]), )
 
-    return results
+        new_config = ConfigModel([config.type, params_range, config.beta])
+
+        params_accuracy = get_params_accuracy(input, obs, start_year, new_config, decay, fitting_method)
+        return base_fitter.get_data_solution(solution, params_accuracy)
+
+    return base_fitter.get_data_solution(solution)

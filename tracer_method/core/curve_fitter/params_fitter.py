@@ -107,7 +107,7 @@ class ParamsFitter:
 
         return np.convolve(vector_a, vector_b, mode="full")
 
-    def get_data_solution(self, solution: OptimizeResult, params_accuracy):
+    def get_data_solution(self, solution: OptimizeResult, params_accuracy=None):
         """
         Get all solution information - output data, response function data and model efficiency based on chosen
         parameters.

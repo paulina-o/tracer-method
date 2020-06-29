@@ -17,7 +17,7 @@ def get_params_accuracy(params, input, obs, start_year, config, decay, fitting_m
     """
     std = np.std(obs[1])
     obs_sets = [np.array([obs[0], np.array([np.random.uniform(i - std, i + std) for i in obs[1]])])
-                for i in range(10)]
+                for i in range(100)]
 
     with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
         results = pool.map(partial(run_method, input=input, start_year=start_year, config=config,
@@ -44,10 +44,10 @@ def get_params_interval_confidence(params: np.ndarray, results: np.ndarray):
     confidence_level = [1 - (is_any_value[i] / len(results_params[i])) if is_any_value[i] else 0.95
                         for i in range(0, len(params))]
 
-    confidence_range = [ranges[i] if is_any_value[i] else (params[i] - std[i] * 1.96, params[i] + std[i] * 1.96)
-                        for i in range(0, len(params))]
+    confidence_interval = [ranges[i] if is_any_value[i] else (params[i] - std[i] * 1.96, params[i] + std[i] * 1.96)
+                           for i in range(0, len(params))]
 
-    return confidence_range, confidence_level
+    return confidence_level, confidence_interval
 
 
 def run_method(obs, input, start_year, config, decay, fitting_method) -> np.ndarray:

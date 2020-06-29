@@ -121,7 +121,9 @@ class ParamsFitter:
         self.fit_data.set_mse(round(solution.fun, 3))
         self.fit_data.set_model_efficiency(round(self.__calculate_me(params), 3))
 
-        self.fit_data.params_accuracy = params_accuracy
+        if params_accuracy is not None:
+            self.fit_data.confidence_level = params_accuracy[0]
+            self.fit_data.confidence_interval = params_accuracy[1]
 
         return self.fit_data
 

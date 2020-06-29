@@ -14,7 +14,8 @@ class FittingResult:
         self.beta = beta
         self.mse = 0
         self.model_efficiency = 0
-        self.params_accuracy = []
+        self.confidence_level = []
+        self.confidence_interval = []
 
     def set_params(self, params: np.ndarray):
         self.params = params

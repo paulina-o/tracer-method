@@ -23,7 +23,7 @@ def get_params_accuracy(params, input, obs, start_year, config, decay, fitting_m
         results = pool.map(partial(run_method, input=input, start_year=start_year, config=config,
                                    decay=decay, fitting_method=fitting_method), obs_sets)
 
-    return get_params_interval_confidence(params, np.round(results, 4))
+    return get_params_interval_confidence(np.round(params, 2), np.round(results, 4))
 
 
 def get_params_interval_confidence(params: np.ndarray, results: np.ndarray):

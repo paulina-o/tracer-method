@@ -8,7 +8,7 @@ setup(name='tracer_method',
                 'tracer_method.core.curve_fitter', 'tracer_method.core.read_data', 'tracer_method.core.tritium'],
       install_requires=[
           'matplotlib==3.2.1',
-          'numpy==1.18.2',
+          'numpy==1.22.0',
           'pandas==1.0.3',
           'scipy==1.4.1',
           'xlrd==1.2.0',

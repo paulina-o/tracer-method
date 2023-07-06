@@ -10,7 +10,7 @@ setup(name='tracer_method',
           'matplotlib==3.2.1',
           'numpy==1.18.2',
           'pandas==1.0.3',
-          'scipy==1.4.1',
+          'scipy==1.10.0',
           'xlrd==1.2.0',
       ],
       zip_safe=False)
